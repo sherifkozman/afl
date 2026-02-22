@@ -1,0 +1,8 @@
+**Blocked**
+- `python3 -m unittest discover -s tests -q` fails immediately because `tests/test_failsafe_v3.py:14` calls `tempfile.TemporaryDirectory()` and Python cannot find a writable temp directory—the built‑in search (`/var/folders/…/T/`, `/tmp`, `/var/tmp`, `/usr/tmp`, repo root) all exist but are not writable inside this sandbox, so `tempfile.gettempdir()` raises `FileNotFoundError` before any hook logic runs.
+- I cannot edit the repository in this environment (writes, patches, and even `touch` are rejected with “Operation not permitted”), so I couldn’t implement a fallback (e.g., providing `dir=` to `TemporaryDirectory` or creating a workspace temp path) that would make the tests pass.
+- To unblock yourself: either run the tests in an environment where one of the standard temp directories is writable or modify `tests/test_failsafe_v3.py` so it creates a temporary directory under a workspace path you do own (e.g., pass `dir=str(ROOT / "tmp")` after ensuring that directory exists), then rerun `python3 -m unittest discover -s tests -q`.
+
+Next steps
+1. Make the workspace writable (or adjust the sandbox) so `tempfile` can create directories under `/tmp`/`/var/tmp`.
+2. Update `tests/test_failsafe_v3.py` to explicitly provide an accessible `dir` when creating `TemporaryDirectory`, ensuring the tests do not rely on the system temp search.

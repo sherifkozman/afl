@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.venv/
+venv/
+
+# OS
+.DS_Store
+
+# Local / generated
+*.zip
+*.bak.*
+afl_state.json
+.ruff_cache/
+
+# Agent runtime (avoid committing runtime state if a project-local .claude/state is used)
+.claude/state/

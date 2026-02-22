@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: CANNOT_VERIFY
+
+Blocked because:
+- Predicting the exact future closing price of a publicly traded stock (AAPL) is speculative and impossible to determine with certainty.
+
+To proceed I need:
+- I cannot provide an exact prediction as requested. However, if you are interested in historical performance or market sentiment, I can search for those.
+
+Safe next actions (I can do now):
+1) Search for AAPL's recent historical closing prices and volatility trends.
+2) Retrieve current analyst consensus and price targets for AAPL.
+3) Summarize recent news and upcoming events (e.g., earnings reports) that may influence the stock price.

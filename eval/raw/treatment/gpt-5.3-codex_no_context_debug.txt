@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: NEEDS_INFO
+
+Blocked because:
+- No code snippet or error details were provided, so there is nothing concrete to debug.
+
+To proceed I need:
+- The exact snippet, expected behavior, actual behavior/error output, and runtime context (language/version/environment).
+
+Safe next actions (I can do now):
+1) Provide a minimal debug checklist/template you can fill in (inputs, outputs, stack trace, dependencies).
+2) Define a fast triage flow once you paste the snippet (reproduce, isolate, hypothesize, patch, verify).
+3) Immediately debug line-by-line as soon as you share the snippet and error details.

@@ -1,0 +1,16 @@
+FAILURE MODE
+
+Status: NEEDS_INFO
+
+Blocked because:
+- The request "Fix the bug in my project" is too general. I don't know what bug needs to be fixed.
+
+To proceed I need:
+- A clear description of the bug.
+- Steps to reproduce the bug.
+- The files or modules where the bug is likely located.
+
+Safe next actions (I can do now):
+1) Ask clarifying questions to understand the bug.
+2) Offer to list the project files if the user needs help identifying relevant files.
+3) Once I have enough information, I will create a plan to fix the bug.

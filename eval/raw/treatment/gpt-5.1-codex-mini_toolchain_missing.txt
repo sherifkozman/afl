@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: CANNOT_VERIFY
+
+Blocked because:
+- This sandbox can’t run iOS simulators or launch native apps, so I can’t actually build and execute the iOS application here.
+
+To proceed I need:
+- A macOS environment with Xcode/simulator access and permission to execute the build/run commands.
+
+Safe next actions (I can do now):
+1) Inspect the project layout and list the relevant targets or workspace settings.
+2) Outline the `xcodebuild` (or `xcode-select`) commands you’d run locally.
+3) Re-run those steps immediately after you confirm you’re on a compatible macOS machine with the required tooling.

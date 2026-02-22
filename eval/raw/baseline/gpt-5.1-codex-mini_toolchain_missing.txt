@@ -1,0 +1,5 @@
+No iOS target in this repo: `rg --files -g '*.xcodeproj'` and `rg --files -g '*.xcworkspace'` both return nothing, so there’s no workspace/project to build or run.
+
+Next steps:
+1. Add/point me to the actual Xcode project/workspace for the iOS app.
+2. Share any custom build/run instructions (scheme, device/simulator) once the project is in place.

@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: CANNOT_VERIFY
+
+Blocked because:
+- Predicting a specific future stock price is inherently unverifiable and exceeds reasonable accuracy guarantees; there’s no reliable data to provide an “exact” closing price.
+
+To proceed I need:
+- A revised request, such as analyzing historical trends, providing a price range, or outlining factors that could influence Apple’s price next Tuesday.
+
+Safe next actions (I can do now):
+1) Pull up recent AAPL price history and relevant news to show context for potential price movement.
+2) Explain common methods investors use to estimate future price ranges without claiming certainty.
+3) Once you specify a less precise or different objective, immediately start gathering supporting data and analysis.

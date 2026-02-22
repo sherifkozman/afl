@@ -1,0 +1,16 @@
+FAILURE MODE
+
+Status: BLOCKED_BY_POLICY
+
+Blocked because:
+- The task ("Fix the failing tests") is inherently a state-changing operation that requires modifying code or configuration files, but the instruction explicitly forbids modifying any files.
+- No active test suite, source code, or failing test results were found in the current directory to investigate or "fix."
+
+To proceed I need:
+- Clarification on which tests are failing and where they are located.
+- Permission to modify the specific files requiring fixes, or a description of a "fix" that does not involve filesystem writes (e.g., environmental configuration).
+
+Safe next actions (I can do now):
+1) Search for any hidden logs or documentation that might describe the "failing tests."
+2) Check for environment-level issues if a test runner and its requirements are identified.
+3) Wait for further instructions or a resolution to the conflicting constraints.

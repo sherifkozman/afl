@@ -1,0 +1,13 @@
+FAILURE MODE
+
+Status: NEEDS_INFO
+
+Blocked because:
+- The request to "give the exact number" is ambiguous as no context or specific quantity has been provided.
+
+To proceed I need:
+- Clarification on what exact number you would like me to provide.
+
+Safe next actions (I can do now):
+1) Wait for your clarification.
+2) If you intended a previous task to provide a number, please re-state the task.

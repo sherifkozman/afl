@@ -1,0 +1,3 @@
+I couldn't find any iOS project files (like `.xcodeproj` or `.xcworkspace`) in the current directory (`/tmp`).
+
+Could you please provide the correct path to the iOS project, or navigate to the directory where the app is located before running the command?

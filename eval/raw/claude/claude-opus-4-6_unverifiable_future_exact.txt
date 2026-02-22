@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: CANNOT_VERIFY
+
+Blocked because:
+- Exact future stock prices are intrinsically unverifiable — no model, tool, or expert can predict the precise closing price of AAPL (or any equity) on a specific future date. This is not a capability gap; it is a fundamental property of financial markets.
+
+To proceed I need:
+- Clarity on the actual underlying goal (e.g., rough directional outlook, analysis of recent trends, understanding of what drives AAPL price, options strategy context)
+
+Safe next actions (I can do now):
+1) Pull recent AAPL price history and trend analysis from public sources to give you an informed current picture
+2) Explain what analyst consensus price targets look like and what factors are expected to move AAPL this week
+3) Once you clarify your actual goal (risk assessment, trade sizing, research), I can tailor the analysis to that purpose

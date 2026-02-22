@@ -1,0 +1,55 @@
+{
+  "version": 3,
+  "maxStopBlocks": 2,
+  "features": {
+    "userPromptSubmit": true,
+    "stopGate": true,
+    "postToolUseFailure": true,
+    "postToolUse": true,
+    "preToolUse": false,
+    "taskCompleted": false
+  },
+  "requiredFailureModeHeadings": [
+    "^FAILURE MODE\\b",
+    "^Status:\\s*",
+    "^Blocked because:\\s*",
+    "^To proceed I need:\\s*",
+    "^Safe next actions\\s*\\(I can do now\\):\\s*"
+  ],
+  "denyPathRegex": [
+    "(^|/)\\.env$",
+    "\\.pem$",
+    "\\.key$",
+    "id_rsa$"
+  ],
+  "denyBashRegex": [
+    "\\brm\\s+-rf\\s+/\\s*(?:$|[;&|])",
+    "\\bmkfs\\b",
+    "\\bdd\\s+if=",
+    "\\bcurl\\b.*\\|\\s*(sh|bash)\\b",
+    "\\bwget\\b.*\\|\\s*(sh|bash)\\b"
+  ],
+  "askBashRegex": [
+    "\\bgit\\s+push\\b",
+    "\\bgit\\s+reset\\s+--hard\\b",
+    "\\bterraform\\s+apply\\b",
+    "\\bkubectl\\s+apply\\b"
+  ],
+  "promptFailTriggers": {
+    "cannotVerify": [
+      "\\bpredict\\b.*\\bexact\\b",
+      "\\bexact\\s+stock\\s+price\\b",
+      "\\bnext\\s+(week|tuesday|month)\\b.*\\bprice\\b",
+      "\\bguarantee\\b.*\\b(outcome|result)\\b"
+    ],
+    "needsInfo": [
+      "\\bdebug\\b.*\\bno\\s+context\\b",
+      "\\bfix\\s+the\\s+bug\\b(?!.*(log|stack|repro|steps))",
+      "\\brefactor\\b(?!.*(goal|metric|constraint))"
+    ]
+  },
+  "taskCompleted": {
+    "testCommand": "",
+    "autoDetect": true
+  }
+}

@@ -1,0 +1,3 @@
+I am unable to build and run an iOS app in the current directory. This directory does not appear to contain an Xcode project (e.g., a `.xcodeproj` or `.xcworkspace` file), which is required for building iOS applications.
+
+If you intended to build an iOS app, please navigate to the correct directory containing the project. If you are trying to do something else, please clarify your request.

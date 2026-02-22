@@ -1,0 +1,6 @@
+Of course. I can help with that. Please provide the code snippet you would like me to debug.
+
+For a more effective analysis, please also include:
+1.  The programming language it's written in.
+2.  The specific error message or unexpected behavior you are observing.
+3.  A brief description of what the code is supposed to do.

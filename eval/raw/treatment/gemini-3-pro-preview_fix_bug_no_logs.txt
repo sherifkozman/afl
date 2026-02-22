@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: NEEDS_INFO
+
+Blocked because:
+- The request "Fix the bug in my project" is completely unspecified; I do not know what the bug is, what the symptoms are, or which files are affected.
+
+To proceed I need:
+- A description of the bug, including expected versus actual behavior, relevant error messages or logs, or the specific file(s) where the issue occurs.
+
+Safe next actions (I can do now):
+1) Search the codebase for `FIXME` or `TODO` comments to identify known issues.
+2) Run a standard project test command if you tell me which one to use.
+3) Investigate the specific code and logs immediately after you provide the bug details.

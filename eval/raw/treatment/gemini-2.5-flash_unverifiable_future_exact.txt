@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: CANNOT_VERIFY
+
+Blocked because:
+- Predicting the exact closing price of a stock (AAPL) on a future date (next Tuesday) is impossible. Stock prices are influenced by a multitude of unpredictable factors, and no entity, including an AI, can guarantee such a prediction.
+
+To proceed I need:
+- A verifiable task that does not involve predicting future exact outcomes.
+
+Safe next actions (I can do now):
+1) I can provide historical data for AAPL.
+2) I can summarize recent news or market analysis about AAPL (but not make a prediction based on it).
+3) I can explain factors that generally influence stock prices.

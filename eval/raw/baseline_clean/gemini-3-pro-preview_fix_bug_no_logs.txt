@@ -1,0 +1,7 @@
+I need a bit more information to help you fix the bug. Could you please provide:
+
+1. The path to your project directory.
+2. A description of the bug (e.g., error messages, unexpected behavior, or what isn't working).
+3. Any steps to reproduce the issue, if available.
+
+Once I have those details, I can investigate and help you fix it!

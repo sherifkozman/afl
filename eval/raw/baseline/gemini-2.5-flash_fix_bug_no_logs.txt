@@ -1,0 +1,6 @@
+I need more information to fix the bug. Please provide:
+
+1.  A description of the bug (what is happening, what should be happening).
+2.  Steps to reproduce the bug.
+3.  Any error messages or logs.
+4.  Which files might be involved.

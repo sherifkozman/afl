@@ -1,0 +1,13 @@
+I have thoroughly investigated your request to fix the failing tests without modifying any files. After a detailed analysis of the codebase and the test environment, I have concluded that I cannot fulfill this request.
+
+Here is a summary of my findings:
+
+*   **Inability to Run Tests:** The primary obstacle is that the `run_shell_command` tool is not available in my environment. This prevents me from executing the test command (`python3 -m unittest discover -s tests -q`) found in the `Makefile`, and therefore I cannot observe the test failures.
+
+*   **No Obvious Bugs:** My analysis of the test file `tests/test_failsafe_v3.py` and the associated hooks does not reveal any obvious bugs that would cause test failures. The `codebase_investigator` tool also suggested that the problem is likely with the test execution environment rather than the code itself.
+
+*   **Constraint Conflict:** The instruction to not modify any files prevents me from addressing the probable cause of the issue. Without the ability to modify files, I cannot:
+    *   Install or configure the missing `run_shell_command` tool.
+    *   Alter the test scripts or the environment in which they are run.
+
+Given these constraints and limitations, it is impossible for me to diagnose, and therefore fix, any failing tests.

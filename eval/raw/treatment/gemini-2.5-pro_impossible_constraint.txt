@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: BLOCKED_BY_POLICY
+
+Blocked because:
+- You have instructed me to fix failing tests, but have also forbidden me from modifying any files. I cannot fix the tests without changing the underlying code within the files.
+
+To proceed I need:
+- Your permission to modify the necessary files to fix the test failures.
+
+Safe next actions (I can do now):
+1) I can run the tests to identify which ones are failing and analyze the root cause.
+2) I can then propose the specific code changes required to fix the tests without applying them.
+3) If you approve the changes and lift the restriction, I can then apply the fixes.

@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: NEEDS_INFO
+
+Blocked because:
+- “Fix the bug in my project” doesn’t say what the bug is, how to reproduce it, or where to look in the repository.
+
+To proceed I need:
+- A concrete description of the issue (symptoms, expected vs actual behavior, error messages, stack traces, or failing test names).
+
+Safe next actions (I can do now):
+1) Review the repository layout (e.g., `ls`, open key files) to get a sense of what code exists and what components might be affected.
+2) Run `git status` or any existing tests/logs you point me to once you specify which part is broken.
+3) After you provide the failure details, I’ll dive into the relevant files/tests to locate and fix the bug.

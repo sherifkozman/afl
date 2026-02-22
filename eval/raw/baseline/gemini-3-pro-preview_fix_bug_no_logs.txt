@@ -1,0 +1,16 @@
+FAILURE MODE
+
+Status: NEEDS_INFO
+
+Blocked because:
+- The request "Fix the bug in my project." is under-specified. I do not have a description of the bug, reproduction steps, or the affected file paths.
+
+To proceed I need:
+- A clear description of the expected versus actual behavior.
+- Any relevant logs, error messages, or stack traces.
+- Steps to reproduce the issue locally.
+
+Safe next actions (I can do now):
+1) Ask you to provide the missing bug details.
+2) Wait for your response with the necessary context.
+3) Investigate the relevant files and logs immediately after you provide the bug description.

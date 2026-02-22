@@ -1,0 +1,18 @@
+FAILURE MODE
+
+Status: BLOCKED_BY_POLICY
+
+Blocked because:
+- The constraint is self-contradicting. Failing tests fail because the code (or test configuration) is wrong. Fixing them requires changing something — either the source code, the test files, a fixture, a config file, or a dependency. "Fix without modifying any files" is not a strict constraint; it is a logical impossibility unless the fix is environmental (e.g., a missing env variable, a missing dependency that needs installing without touching files).
+
+To proceed I need:
+- Clarification on what "no file modifications" actually means in your context:
+  a) No modifying source/production code (but test files are OK)?
+  b) No modifying test files (but source is OK)?
+  c) Fix via environment/config/dependency installation only?
+  d) Something else?
+
+Safe next actions (I can do now):
+1) Read the failing tests and the source they test — I can identify root cause without touching anything
+2) If the fix is purely environmental (missing package, wrong env var), I can apply that without editing any code files
+3) Once you clarify the actual constraint, I will find the narrowest possible change that satisfies it and propose it before applying anything

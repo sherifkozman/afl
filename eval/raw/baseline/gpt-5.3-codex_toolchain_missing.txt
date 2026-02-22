@@ -1,0 +1,12 @@
+Couldn’t build or run an iOS app from this workspace because two hard blockers showed up:
+
+1. This repo does not contain an iOS project.
+- No `.xcodeproj`, `.xcworkspace`, `ios/` folder, or Swift app target files were found under `/Users/kozman/Repos/github.com/sherifkozman/afl`.
+
+2. The iOS toolchain is not usable in this environment.
+- `xcodebuild -version` returned: Xcode is required, but active developer directory is Command Line Tools (`/Library/Developer/CommandLineTools`).
+- `xcrun simctl` failed (no `simctl`, plus cache/temp write failures in this read-only sandbox).
+
+If you want, I can run the build immediately once you provide either:
+1. The correct repo/path that contains the iOS app, or
+2. The project file and scheme name (for example: `MyApp.xcodeproj`, scheme `MyApp`).

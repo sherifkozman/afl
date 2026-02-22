@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: CANNOT_VERIFY
+
+Blocked because:
+- No iOS project files (e.g., `.xcodeproj`, `.xcworkspace`, `Package.swift`, `Podfile`) or cross-platform mobile frameworks (Flutter, React Native) were found in the current workspace (`/Users/kozman/Repos/github.com/sherifkozman/afl`). This repository appears to be "Project Failsafe," a Python-based harness for Claude Code.
+
+To proceed I need:
+- The exact location of the iOS project to be built, or the project files to be added to the current workspace.
+
+Safe next actions (I can do now):
+1) List the repository contents again to confirm no hidden subdirectories were missed.
+2) Search parent directories or nearby paths for an existing iOS project.
+3) Scaffold a new native iOS or cross-platform project if that was your intention.

@@ -1,0 +1,21 @@
+The investigation into the failing tests in the `afl` project (Agent Failsafe Layer) has identified two primary root causes for the test failures, even though I am not permitted to modify any files to apply the fixes directly:
+
+1.  **Status String Mismatch in `failsafe_user_prompt.py`**:
+    *   **Observation**: The tests in `tests/test_failsafe_v3.py` expect status strings like `CANNOT_VERIFY` and `NEEDS_INFO` (underscored).
+    *   **Cause**: The `codebase_investigator` identified that the implementation in `hooks/failsafe_user_prompt.py` (and potentially other hooks) uses a formatting logic (like `.upper()` on camelCase keys) that results in strings like `CANNOTVERIFY` instead of the expected `CANNOT_VERIFY`.
+    *   **Impact**: Assertions such as `self.assertEqual(state.get("status"), "CANNOT_VERIFY")` fail because the actual value is `CANNOTVERIFY`.
+
+2.  **Path Resolution Inconsistency on macOS**:
+    *   **Observation**: The project is running on `darwin` (macOS), where `/var` is a symlink to `/private/var`.
+    *   **Cause**: The library `hooks/failsafe_lib.py` uses `.resolve()` extensively (e.g., in `_home_claude_dir` and `_project_key`), which converts paths to their "real" `/private/var/...` form. However, the test suite `tests/test_failsafe_v3.py` often uses the temporary directory paths directly (which may start with `/var/...`).
+    *   **Impact**: When calculating the `_project_key` (which involves hashing the resolved path), the script and the test may generate different keys if they don't both use `.resolve()`. Furthermore, assertions checking for file existence in `self.home` (unresolved) may fail if the files were created in the resolved path, leading to `FileNotFoundError` or empty glob results in tests like `test_user_prompt_sets_state_in_global_dir_when_project_has_no_claude`.
+
+3.  **Regex Matching Strictness**:
+    *   **Observation**: The `is_failure_mode_message_compliant` function in `failsafe_lib.py` uses `^` anchors in its regexes and matches against `line.strip()`.
+    *   **Cause**: If the template strings in the tests contain even minor discrepancies in whitespace or formatting (e.g., a missing colon or an extra space that the regex doesn't account for), the `Stop` gate will block erroneously. Specifically, the regex for `Safe next actions` in `failsafe_policy.json` uses `\\(` which must correctly resolve to a literal `(` after JSON parsing. While the regex appears correct, any mismatch in the number of spaces between "actions" and the parenthesis in the test string would cause a failure.
+
+### Recommended Fixes (Manual Intervention Required)
+Since I am restricted from modifying files, the following changes must be applied manually to fix the tests:
+*   **Fix Status Strings**: Ensure `hooks/failsafe_user_prompt.py` and `hooks/failsafe_post_tool_failure.py` use the underscored constants (`CANNOT_VERIFY`, `NEEDS_INFO`) to match the test expectations.
+*   **Unify Path Resolution**: Update `tests/test_failsafe_v3.py` to call `.resolve()` on `self.home` and `self.project` in `setUp` to ensure consistent hashing and file path comparisons with the library logic.
+*   **Relax Regexes**: Update `failsafe_policy.json` to use more flexible regexes (e.g., removing `^` anchors or allowing variable whitespace) to make the compliance check more robust against minor formatting variations in assistant messages.

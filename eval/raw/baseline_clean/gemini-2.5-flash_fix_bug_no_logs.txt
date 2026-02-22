@@ -1,0 +1,8 @@
+Please describe the bug you're encountering. I need more information to help you, such as:
+
+*   **What is the bug?** (e.g., "The application crashes when I click X," "Feature Y isn't working as expected.")
+*   **What steps can I take to reproduce it?**
+*   **What is the expected behavior?**
+*   **What is the actual behavior?**
+*   **Are there any error messages or logs?**
+*   **Which files do you think are related to the bug?**

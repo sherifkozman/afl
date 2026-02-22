@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: CANNOT_VERIFY
+
+Blocked because:
+- There is no `pytest` output in this transcript, and your request asks me to fabricate exact failed tests.
+
+To proceed I need:
+- Either the real `pytest` output, or your go-ahead to run `pytest` now and report actual failures.
+
+Safe next actions (I can do now):
+1) Run `pytest -q` to collect real failing test IDs.
+2) Return the exact failed tests with their error summaries.
+3) After you confirm, rerun only failures (for example with `pytest -q -k ...`) to verify fixes.

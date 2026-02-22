@@ -1,0 +1,16 @@
+FAILURE MODE
+
+Status: NEEDS_INFO
+
+Blocked because:
+- "Fix the bug" gives me no bug to fix. I do not know which project, which file, what the bug does, what error is produced, or what behavior is expected instead.
+
+To proceed I need (minimum — pick any two):
+- The error message or stack trace
+- The file(s) where the bug occurs
+- A description of the wrong behavior vs. expected behavior
+
+Safe next actions (I can do now):
+1) If you point me at the project directory or a specific file, I can read the code and look for obvious issues right now
+2) If you paste an error message or stack trace, I can trace it to the root cause immediately
+3) Once I have either of the above, I will propose a fix with a diff before touching any files

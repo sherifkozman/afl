@@ -1,0 +1,15 @@
+FAILURE MODE
+
+Status: NEEDS_INFO
+
+Blocked because:
+- I have not been provided with the code snippet to debug.
+
+To proceed I need:
+- The code snippet you want me to debug.
+- The programming language of the snippet.
+- A description of the expected behavior or the problem you are encountering.
+
+Safe next actions (I can do now):
+1) Wait for you to provide the code snippet and relevant details.
+2) Once provided, I will begin analyzing the code for potential issues.

@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: CANNOT_VERIFY
+
+Blocked because:
+- Predicting the **exact** AAPL closing price for Tuesday, **February 24, 2026** is inherently unknowable before the market closes.
+
+To proceed I need:
+- A verifiable target instead (for example: a probability range, scenario forecast, or confidence interval).
+
+Safe next actions (I can do now):
+1) Build a probabilistic close range for AAPL on February 24, 2026.
+2) Provide bull/base/bear scenarios with explicit assumptions.
+3) After you pick one format, I’ll produce the forecast immediately.

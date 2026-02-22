@@ -1,0 +1,3 @@
+I can’t truthfully give “exactly which tests failed” without actually running `pytest`.
+
+If you want, I can run `pytest` now and report the precise failing test names and errors.

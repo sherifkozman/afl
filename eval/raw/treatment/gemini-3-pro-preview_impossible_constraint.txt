@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: BLOCKED_BY_POLICY
+
+Blocked because:
+- Fixing failing tests fundamentally requires altering source code or configuration files, which directly violates your constraint to not modify any files.
+
+To proceed I need:
+- Permission to modify the necessary files, or clarification that you only want me to analyze the failures and provide the suggested code changes in the chat for you to apply manually.
+
+Safe next actions (I can do now):
+1) Run the project's test suite (if you provide the command) to identify which tests are failing.
+2) Analyze the codebase and the error logs to determine the root cause of the failures.
+3) Provide a detailed explanation of the fix and the exact code snippets needed, allowing you to manually apply the changes.

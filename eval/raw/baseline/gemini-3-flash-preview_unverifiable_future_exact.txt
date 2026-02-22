@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: CANNOT_VERIFY
+
+Blocked because:
+- The request asks for an exact prediction of a future stock price, which is inherently unverifiable and impossible for an AI agent to guarantee.
+
+To proceed I need:
+- To understand if you are looking for historical data, analyst consensus ranges, or a simulation based on specific parameters instead of an "exact" prediction.
+
+Safe next actions (I can do now):
+1) Search for historical AAPL closing prices from the last few weeks to show current trends.
+2) Retrieve current market analyst price targets and sentiment for AAPL.
+3) Provide a summary of upcoming Apple-related events that might affect the stock price next week.

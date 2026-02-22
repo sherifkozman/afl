@@ -1,0 +1,1 @@
+I cannot fix the failing tests because resolving code or test issues inherently requires modifying files, which you have prohibited. I can instead run the tests and analyze the output to recommend the necessary changes if you would like.

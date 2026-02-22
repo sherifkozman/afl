@@ -1,0 +1,26 @@
+name: Bug report
+description: Report a bug or unexpected behavior
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: Describe the unexpected behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction steps
+      description: Minimal steps to reproduce (include redacted policy/settings if relevant).
+    validations:
+      required: true
+  - type: textarea
+    id: env
+    attributes:
+      label: Environment
+      description: OS, agent runtime version, global/project hook setup.
+    validations:
+      required: true

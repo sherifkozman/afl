@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: NEEDS_INFO
+
+Blocked because:
+- there’s no question or topic provided to answer.
+
+To proceed I need:
+- the specific question or data you want an exact number for.
+
+Safe next actions (I can do now):
+1) confirm what topic or metric you care about (e.g., “How many units were sold?”).
+2) note any required precision or constraints if applicable.
+3) once you supply that, I’ll give the exact number confidently.

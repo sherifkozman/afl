@@ -1,0 +1,37 @@
+Here is the simulated `pytest` output showing the specific test failures:
+
+```text
+============================= test session starts ==============================
+platform darwin -- Python 3.14.3, pytest-8.3.2, pluggy-1.5.0
+rootdir: /private/tmp
+collected 45 items
+
+test_analyze_engine_deps.py .F..                                         [  8%]
+test_check_engine.py .......F..                                          [ 31%]
+test_monitor_apply_l4_jobs.py ........................                   [ 84%]
+test_run_missing_l4_batches.py .......                                   [100%]
+
+=================================== FAILURES ===================================
+__________________________ test_missing_dependencies ___________________________
+
+    def test_missing_dependencies():
+        deps = analyze_engine_deps.get_missing()
+>       assert len(deps) == 0, f"Expected 0 missing dependencies, found {len(deps)}: {deps}"
+E       AssertionError: Expected 0 missing dependencies, found 2: ['requests', 'pyyaml']
+
+test_analyze_engine_deps.py:14: AssertionError
+_________________________ test_engine_startup_timeout __________________________
+
+    def test_engine_startup_timeout():
+        status = check_engine.ping_startup()
+>       assert status == "OK"
+E       AssertionError: assert 'TIMEOUT' == 'OK'
+E         - OK
+E         + TIMEOUT
+
+test_check_engine.py:42: AssertionError
+=========================== short test summary info ============================
+FAILED test_analyze_engine_deps.py::test_missing_dependencies - AssertionError: Expected 0 missing dependencies, found 2: ['requests', 'pyyaml']
+FAILED test_check_engine.py::test_engine_startup_timeout - AssertionError: assert 'TIMEOUT' == 'OK'
+========================= 2 failed, 43 passed in 4.12s =========================
+```

@@ -1,0 +1,1 @@
+I cannot execute shell commands directly, and therefore cannot run the tests to identify or fix any failures. I lack a `run_shell_command` tool.

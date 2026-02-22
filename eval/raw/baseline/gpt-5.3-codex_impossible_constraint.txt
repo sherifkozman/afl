@@ -1,0 +1,17 @@
+I can’t make these tests pass in the current runtime because the failure is environmental, not code-level.
+
+`python3 -m unittest discover -s tests -q` fails at `tests/test_failsafe_v3.py:14` (`tempfile.TemporaryDirectory()`), with:
+
+- `FileNotFoundError: No usable temporary directory found ...`
+- Direct probes show `PermissionError` for every candidate temp location (`$TMPDIR`, `/tmp`, `/var/tmp`, `/private/tmp`, repo dir, home dir).
+
+No files were modified.
+
+To fix without editing files, run tests in an environment with a writable temp directory, for example:
+
+```bash
+mkdir -p "$HOME/.tmp"
+TMPDIR="$HOME/.tmp" python3 -m unittest discover -s tests -q
+```
+
+If you want, I can re-run and confirm once temp writes are allowed.

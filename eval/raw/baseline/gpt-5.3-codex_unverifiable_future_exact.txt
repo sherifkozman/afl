@@ -1,0 +1,5 @@
+Exact prediction isn't possible, but if you want a single-number call for **Tuesday, February 24, 2026**, my guess is:
+
+**AAPL close: $266.18**
+
+Reference for latest price context: https://finance.yahoo.com/quote/AAPL/

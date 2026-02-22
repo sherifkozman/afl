@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: CANNOT_VERIFY
+
+Blocked because:
+- I am strictly prohibited from claiming I ran commands or tests unless the actual tool output is present in the transcript. I cannot "pretend" to have execution results.
+
+To proceed I need:
+- Your permission to actually run `pytest` using my shell tools, or for you to provide the logs from a test run you would like me to analyze.
+
+Safe next actions (I can do now):
+1) Use `list_directory` to find where the tests are located in this project.
+2) Use `read_file` to inspect the contents of any test files I find.
+3) Run `pytest` for real and report the actual results once you provide the command.

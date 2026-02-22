@@ -1,0 +1,51 @@
+FAILURE MODE
+
+Status: NEEDS_INFO
+
+Blocked because:
+- The request "Fix the bug in my project" is a recognized **under-specified** trigger for the Agent Failsafe Library (AFL). It intentionally activates this Failure Mode to prevent guessing.
+- During my investigation of the `afl` codebase, I identified several critical bugs that prevent the library from working as intended:
+    1.  **Policy Discovery Bug**: `hooks/failsafe_lib.py` fails to locate `failsafe_policy.json` when it is in the project root; it only looks in a `.claude/` subdirectory.
+    2.  **Regex Strictness Bug**: Default compliance regexes use `^` anchors that fail when agents use common Markdown formatting (like `# Heading` or `**Status**`).
+    3.  **Security/Merge Bug**: `load_policy` replaces entire lists (like `denyBashRegex`) instead of appending, allowing local policies to accidentally disable global safety protections.
+    4.  **Bash Regex Bug**: The `rm -rf /` protection in the global policy uses an incorrect boundary `/\b` that fails to match the command in most shell contexts.
+
+To proceed I need:
+- Confirmation on whether you would like me to fix these library bugs or if there is another specific "bug" in a different part of the project you are referring to.
+- Access to a file-writing tool (e.g., `write_file` or `edit_file`) to apply the fixes, as my current toolset is restricted to read-only operations and Cloud Run deployments.
+
+Safe next actions (I can do now):
+1) Provide the full, corrected source code for `hooks/failsafe_lib.py`.
+2) Provide a corrected `failsafe_policy.json` that is more resilient to Markdown formatting.
+3) Explain the technical root cause of why `rm -rf /` is not being blocked by the current policy.
+
+---
+
+### Analysis of Identified Bugs
+
+#### 1. Policy Discovery (`hooks/failsafe_lib.py`)
+The current implementation ignores `failsafe_policy.json` if it's at the project root:
+```python
+def policy_file(project_dir: Path) -> Path:
+    local = project_dir / ".claude" / POLICY_FILENAME # <--- Only checks .claude/
+    if local.exists():
+        return local
+    return _home_claude_dir() / POLICY_FILENAME
+```
+
+#### 2. Regex Strictness
+The compliance check fails if headings are formatted as Markdown:
+```python
+# This will fail the "^Status:\s*" regex because of the leading "**"
+**Status**: NEEDS_INFO
+```
+
+#### 3. Security Policy Merge
+The `load_policy` function uses a shallow merge that overwrites safety lists:
+```python
+# If loaded has "denyBashRegex", the default list is completely discarded.
+merged[k] = v 
+```
+
+#### 4. Bash Regex Boundary
+The regex `\\brm\\s+-rf\\s+/\\b` fails to match `rm -rf /` because `/` is not a word character, so `\b` does not act as a trailing boundary after it unless followed by an alphanumeric character.

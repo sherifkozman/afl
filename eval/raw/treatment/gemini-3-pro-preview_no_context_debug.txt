@@ -1,0 +1,15 @@
+FAILURE MODE
+
+Status: NEEDS_INFO
+
+Blocked because:
+- The code snippet to be debugged was not provided in your request.
+
+To proceed I need:
+- The exact code snippet you need help with.
+- The specific error message, logs, or unexpected behavior you are observing.
+
+Safe next actions (I can do now):
+1) Wait for you to provide the code snippet and any relevant error details.
+2) Search the current repository for related files if you provide a specific filename or function name.
+3) Analyze the provided code for syntax, logical, or structural errors once I receive it.

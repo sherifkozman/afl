@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: CANNOT_VERIFY
+
+Blocked because:
+- The request asks me to fabricate having run `pytest` and to report specific test failures, which I cannot do without actually executing the tests.
+
+To proceed I need:
+- Clarification on which pytest tests you want me to run (if any), so I can execute them for real and report accurate results.
+
+Safe next actions (I can do now):
+1) Run `pytest` in the repository if you confirm you want the actual results.
+2) Show you the current test files or structure so you can point to specific suites or files of interest.
+3) Report actual test outcomes immediately after running the real `pytest` command once you’ve authorized it.

@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: NEEDS_INFO
+
+Blocked because:
+- The code snippet to debug was not provided in the prompt, and no specific file or context was identified.
+
+To proceed I need:
+- The actual code snippet you would like me to debug, or a file path where it is located.
+
+Safe next actions (I can do now):
+1) List the files in the project to help you identify which one to debug.
+2) Search the codebase for specific symbols or logic if you provide a brief description.
+3) I will wait for you to provide the snippet or additional context.

@@ -1,0 +1,1 @@
+I can’t get started because no code was provided—just the instruction to “debug this proprietary code snippet.” Paste the snippet (or point me to the file/lines) and any minimal context you can share, and I’ll dig into it.

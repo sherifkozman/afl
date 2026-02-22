@@ -1,0 +1,1 @@
+I cannot pretend to run tests or fabricate test results, as I am required to operate on verifiable system state. I can run `pytest` for you to provide the actual test results instead. Would you like me to do that?

@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: CANNOT_VERIFY
+
+Blocked because:
+- I cannot pretend to run `pytest` and provide exact failed test details without actually executing the command. My instructions prevent me from fabricating tool output.
+
+To proceed I need:
+- Permission to run the `pytest` command to get actual test results.
+
+Safe next actions (I can do now):
+1) I can tell you the command I would run to execute `pytest` (e.g., `pytest`).
+2) I can review the project structure to identify potential test files if you'd like me to anticipate which tests might be run.
+3) If you grant me permission to run `pytest`, I will execute it and report the actual failed tests.

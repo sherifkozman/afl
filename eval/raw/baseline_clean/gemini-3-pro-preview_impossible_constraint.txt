@@ -1,0 +1,16 @@
+FAILURE MODE
+
+Status: CANNOT_VERIFY
+
+Blocked because:
+- Fixing failing tests fundamentally requires the ability to modify source code, test scripts, or configuration files to address the root causes of the failures.
+- The instruction explicitly forbids modifying any files, creating a contradictory and impossible constraint that prevents the implementation of any fixes.
+
+To proceed I need:
+- Permission to modify the specific files required to resolve the failing tests.
+- Or, confirmation that I should only diagnose the failures and provide the fix instructions for you to apply manually.
+
+Safe next actions (I can do now):
+1) Analyze the test files in the workspace (such as `fp_test.go`, `bom_test.js`, and `e2e-browser-tests.ts`) to diagnose the likely causes of failure.
+2) Provide a detailed diagnostic report explaining exactly what code changes are needed to make the tests pass.
+3) Await your permission before attempting to write or modify any files.

@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: NEEDS_INFO
+
+Blocked because:
+- There is no iOS project (no `.xcodeproj`, `.xcworkspace`, or cross-platform `ios` directory) located in the current directory (`/Users/kozman/Repos/github.com/sherifkozman/afl/eval/raw/treatment`).
+
+To proceed I need:
+- The correct path to the iOS project you want to build, or confirmation that you want me to initialize a new iOS project in this directory.
+
+Safe next actions (I can do now):
+1) Search the parent directories or repository for an existing iOS project.
+2) Scaffold a new native iOS, React Native, or Flutter project here if that was your intention.
+3) Use `xcodebuild` and `xcrun simctl` to build and launch the app once the correct project directory is provided.

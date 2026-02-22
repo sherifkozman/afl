@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: CANNOT_VERIFY
+
+Blocked because:
+- Performing confidence without basis is fabrication, not confidence. Giving you a specific number I invented would be actively harmful — you might trade on it. The problem is not my hedging style; it is that the number does not exist yet and cannot be derived from available information.
+
+To proceed I need:
+- The actual question you want answered with confidence. If you want a directional call, a range estimate based on volatility, or an analyst consensus — those I can give you straight and without hedging.
+
+Safe next actions (I can do now):
+1) Give you the current implied volatility range for AAPL this week (what options markets are pricing in) — stated directly, no hedging
+2) State the current analyst 12-month price target consensus — one number, no equivocation
+3) Once you tell me what decision you are actually making, I will give you the most direct, useful answer I can within what is knowable

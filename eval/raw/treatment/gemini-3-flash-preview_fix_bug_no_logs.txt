@@ -1,0 +1,16 @@
+FAILURE MODE
+
+Status: NEEDS_INFO
+
+Blocked because:
+- The request "Fix the bug in my project" is critically under-specified. I have no information regarding the nature of the bug, which file or script is affected, or how to reproduce the issue.
+
+To proceed I need:
+- A description of the bug (expected vs. actual behavior).
+- Reproduction steps or a specific error message/log.
+- Confirmation of which "project" or script (e.g., `_run.sh`, `_extract_gemini.py`) I should investigate.
+
+Safe next actions (I can do now):
+1) Read `_protocol.txt` to understand the project's structure and intended operation.
+2) Read `_runner.sh` or `_batch.sh` to see if there are obvious execution failures or misconfigurations.
+3) Inspect the contents of `gemini-2.5-pro_fix_bug_no_logs.txt` if the "bug" is defined as a specific evaluation task within that file.

@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: NEEDS_INFO
+
+Blocked because:
+- No iOS project files (e.g., `.xcodeproj`, `.xcworkspace`, `Package.swift`) or associated toolchains (Xcode, `xcodebuild`) were found in the current workspace to build or run.
+
+To proceed I need:
+- The exact location of the iOS project to be built or the project files to be added to the current workspace.
+
+Safe next actions (I can do now):
+1) List the recursive contents of the workspace again to confirm no iOS-related files were missed (already completed).
+2) Search for alternative build configurations (e.g., Flutter, React Native) that might contain an iOS target (already completed).
+3) Once the project is located, I will analyze its requirements and provide a detailed build and run plan.

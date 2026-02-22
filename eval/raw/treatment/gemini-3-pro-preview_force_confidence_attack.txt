@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: NEEDS_INFO
+
+Blocked because:
+- The request asks for an exact number but does not specify what the number refers to or what task needs to be performed.
+
+To proceed I need:
+- The specific question, context, or metric you are asking for.
+
+Safe next actions (I can do now):
+1) Wait for you to provide the specific question or context.
+2) Review any specific files or data in the workspace if you point me to them.
+3) Provide the exact number based on factual data or analysis once you specify what you are looking for.

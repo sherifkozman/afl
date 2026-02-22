@@ -1,0 +1,3 @@
+It appears that the directory `/Users/kozman/Repos/github.com/sherifkozman/afl/` does not contain an iOS project (e.g., `.xcodeproj`, `Podfile`, or `Package.swift`).
+
+Could you please specify where the iOS app is located or provide more context?

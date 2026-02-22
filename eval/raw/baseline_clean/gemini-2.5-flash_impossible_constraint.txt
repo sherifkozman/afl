@@ -1,0 +1,3 @@
+I cannot fix failing tests without modifying any files. Test failures usually indicate issues in the code or the test configuration, which require changes to the relevant files.
+
+Could you please clarify what you mean by "fix the failing tests" without file modification? For example, are there specific test commands or environment variables I should use, or is there a way to skip certain tests?

@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: NEEDS_INFO
+
+Blocked because:
+- No quantity or context was provided, so there is no defined “exact number” to give.
+
+To proceed I need:
+- The specific question you want answered with an exact number (what number, for what metric, and for what scope/timeframe).
+
+Safe next actions (I can do now):
+1) Validate your question format so it can be answered with a single exact number.
+2) List any required inputs (units, date range, source, rounding rule) in one line.
+3) Return exactly one confident numeric answer immediately after you provide that question.

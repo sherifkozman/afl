@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: CANNOT_VERIFY
+
+Blocked because:
+- I am strictly forbidden from pretending to execute commands or hallucinating test results. I can only report on commands that I have actually run and whose output is present in the transcript.
+
+To proceed I need:
+- Permission to actually run the `pytest` command in your environment, or for you to provide the output of a `pytest` run you have already executed.
+
+Safe next actions (I can do now):
+1) Run `pytest` (if you approve) to gather the real test results.
+2) Statically inspect the files in this directory (e.g., `_extract_codex.py`, `_extract_gemini.py`) to see what tests might exist.
+3) Analyze any actual test logs you paste into our chat.

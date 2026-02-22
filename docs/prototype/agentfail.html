@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AFL (Agent Failure Mode): AI Failure Mode Research</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- Chosen Palette: Warm Neutral Academic -->
+    <!-- Colors: 
+         Bg: #FDFCF8 (Warm White/Paper)
+         Text: #334155 (Slate 700)
+         Accent Primary: #0F766E (Teal 700 - Success/Stable)
+         Accent Warning: #D97706 (Amber 600 - Failure Mode/Harness)
+         Accent Danger: #BE123C (Rose 700 - Hallucination)
+         UI: #F1F5F9 (Slate 100)
+    -->
+
+    <!-- Application Structure Plan:
+         1. Header/Abstract: Introduces the core hypothesis from the source text.
+         2. Problem Space: Interactive comparison cards showing "Human vs. Agent" behavior when hitting a knowledge wall.
+         3. The Hypothesis Model: A responsive HTML-based flow diagram visualizing the proposed "Harness" logic.
+         4. Simulation Lab (Interactive Core): A mock chat interface where users 'test' an agent. 
+            - User toggles "Harness On/Off" and "Task Difficulty".
+            - Users click "Run Task".
+            - Chart.js updates in real-time to show the distribution of outcomes (Success vs. Hallucination vs. Guided Failure).
+         5. Theoretical Framework: A slider-based analysis section where users adjust the "Confidence Threshold" to see the theoretical impact on reliability (Line Chart).
+         6. Conclusion: Summary of the hypothesis and next steps.
+    -->
+
+    <!-- Visualization & Content Choices:
+         1. "Behavioral Divergence" (Comparison Cards): Text-based interactive cards to contrast human "giving up" vs. AI "hallucinating". Goal: Establish the problem.
+         2. "Simulation Results" (Chart.js Bar): Dynamic visualization of the user's manual testing in the Simulation Lab. Goal: Gamify the concept and show immediate impact of the harness.
+         3. "Threshold Analysis" (Chart.js Line): Mathematical projection of how a "Failure Mode" affects outcome distribution. Goal: Visualize the trade-off between answering and asking for help.
+         4. "Logic Flow" (HTML/CSS Grid): Visualizing the decision tree. NO SVG/Mermaid.
+         CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFCF8;
+            color: #334155;
+        }
+        h1, h2, h3, .brand-font {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        /* Custom scrollbar for chat log */
+        .chat-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .chat-scroll::-webkit-scrollbar-track {
+            background: #f1f5f9; 
+        }
+        .chat-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 3px;
+        }
+        .node {
+            transition: all 0.3s ease;
+        }
+        .node:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-teal-100 selection:text-teal-900">
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-[#FDFCF8]/95 backdrop-blur border-b border-slate-200">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center space-x-2">
+                    <span class="text-2xl font-bold brand-font text-slate-800"><span class="text-teal-700">AFL</span> (Agent Failure Mode)</span>
+                </div>
+                <div class="hidden md:flex space-x-8 text-sm font-medium text-slate-600">
+                    <a href="#hypothesis" class="hover:text-teal-700 transition-colors">The Hypothesis</a>
+                    <a href="#logic-model" class="hover:text-teal-700 transition-colors">Logic Model</a>
+                    <a href="#simulation" class="hover:text-teal-700 transition-colors">Simulation Lab</a>
+                    <a href="#analysis" class="hover:text-teal-700 transition-colors">Analysis</a>
+                </div>
+                <button onclick="document.getElementById('simulation').scrollIntoView({behavior: 'smooth'})" class="bg-slate-900 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-slate-700 transition-colors">
+                    Test Harness
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero / Abstract -->
+    <header class="max-w-4xl mx-auto px-4 py-16 sm:px-6 lg:px-8 text-center">
+        <div class="inline-flex items-center px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-bold mb-6 tracking-wide uppercase">
+            Research Concept
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold text-slate-900 tracking-tight mb-6 leading-tight">
+            The Missing "Failure Mode" <br>in AI Agents
+        </h1>
+        <p class="text-xl text-slate-600 mb-8 max-w-2xl mx-auto leading-relaxed">
+            Current AI agents are designed to fulfill tasks regardless of capability, often leading to hallucinations. 
+            What if agents were harnessed to "give up" proactively? This research explores a controlled failure state as a mechanism for reliability.
+        </p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12 text-left">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <h3 class="font-bold text-lg text-slate-900 mb-2">Current State: "The Can-Do Trap"</h3>
+                <p class="text-slate-600 text-sm">Agents rarely admit inability. Without a harness, they attempt to bridge knowledge gaps with plausible-sounding fabrications (hallucinations).</p>
+            </div>
+            <div class="bg-white p-6 rounded-2xl border border-teal-100 shadow-sm ring-1 ring-teal-500/20">
+                <h3 class="font-bold text-lg text-teal-900 mb-2">Hypothesis: "Harnessed Failure"</h3>
+                <p class="text-slate-600 text-sm">Implementing a specific "Failure Mode" where the agent detects low confidence and proactively requests feedback instead of guessing.</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 space-y-24">
+
+        <!-- SECTION 1: LOGIC MODEL -->
+        <section id="logic-model" class="scroll-mt-24">
+            <div class="mb-8 border-l-4 border-slate-900 pl-4">
+                <h2 class="text-2xl font-bold text-slate-900">The Proposed Architecture</h2>
+                <p class="text-slate-600 mt-2">
+                    How the "Failure Mode Harness" intercepts the standard generation process.
+                </p>
+            </div>
+
+            <!-- Conceptual Flowchart using Grid -->
+            <div class="bg-slate-50 p-8 rounded-3xl border border-slate-200 overflow-hidden">
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-center text-center">
+                    
+                    <!-- Step 1 -->
+                    <div class="node bg-white p-4 rounded-xl border border-slate-200 shadow-sm relative z-10">
+                        <div class="text-xs font-bold text-slate-400 uppercase mb-1">Input</div>
+                        <div class="font-bold text-slate-800">User Prompt</div>
+                    </div>
+
+                    <!-- Arrow -->
+                    <div class="hidden md:block text-slate-300 text-2xl">→</div>
+
+                    <!-- Step 2 -->
+                    <div class="node bg-indigo-50 p-4 rounded-xl border border-indigo-100 shadow-sm relative z-10 ring-2 ring-indigo-500/10">
+                        <div class="text-xs font-bold text-indigo-400 uppercase mb-1">Harness</div>
+                        <div class="font-bold text-indigo-900">Confidence Check</div>
+                        <div class="text-xs text-indigo-600 mt-1">Can I do this?</div>
+                    </div>
+
+                    <!-- Arrow Split -->
+                    <div class="hidden md:flex flex-col justify-center items-center h-full relative">
+                         <div class="absolute w-px h-full bg-slate-200 top-0 left-1/2 -z-0"></div>
+                         <div class="bg-slate-50 z-10 py-2 text-slate-400 text-xs font-bold">THRESHOLD</div>
+                    </div>
+
+                    <!-- Step 3 (Outcomes) -->
+                    <div class="flex flex-col space-y-4">
+                        <div class="node bg-teal-50 p-3 rounded-xl border border-teal-100 shadow-sm text-left">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="w-2 h-2 rounded-full bg-teal-500"></span>
+                                <span class="text-xs font-bold text-teal-700">HIGH CONFIDENCE</span>
+                            </div>
+                            <div class="text-sm font-medium text-slate-700">Execute Task</div>
+                        </div>
+                        <div class="node bg-amber-50 p-3 rounded-xl border border-amber-100 shadow-sm text-left ring-2 ring-amber-500/20">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                                <span class="text-xs font-bold text-amber-700">LOW CONFIDENCE</span>
+                            </div>
+                            <div class="text-sm font-medium text-slate-700">Trigger Failure Mode</div>
+                            <div class="text-xs text-slate-500 italic mt-1">"I need more info..."</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="mt-4 text-sm text-slate-500 text-center max-w-2xl mx-auto">
+                Unlike standard error handling, the "Failure Mode" is a conversational state. It transforms a potential hallucination (a silent error) into a dialogue (an explicit request).
+            </p>
+        </section>
+
+        <!-- SECTION 2: SIMULATION LAB -->
+        <section id="simulation" class="scroll-mt-24">
+            <div class="mb-8 border-l-4 border-amber-500 pl-4">
+                <h2 class="text-2xl font-bold text-slate-900">Simulation Lab</h2>
+                <p class="text-slate-600 mt-2">
+                    Test the hypothesis. Run tasks with varying difficulty and toggle the "Harness" to see how the Failure Mode impacts outcome reliability.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <!-- Controls & Chat -->
+                <div class="lg:col-span-1 space-y-6">
+                    <!-- Control Panel -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                        <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                            <span>⚙️</span> Configuration
+                        </h3>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Task Difficulty</label>
+                                <div class="flex bg-slate-100 rounded-lg p-1">
+                                    <button onclick="setDifficulty('easy')" id="btn-easy" class="flex-1 py-1.5 text-sm rounded-md font-medium transition-all bg-white shadow-sm text-slate-800">Standard</button>
+                                    <button onclick="setDifficulty('hard')" id="btn-hard" class="flex-1 py-1.5 text-sm rounded-md font-medium transition-all text-slate-500 hover:text-slate-700">Complex</button>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <label class="block text-xs font-bold text-slate-500 uppercase">Failure Harness</label>
+                                    <span id="harness-status" class="text-xs font-bold text-slate-400">OFF</span>
+                                </div>
+                                <button onclick="toggleHarness()" id="harness-toggle" class="w-full py-2 rounded-lg border-2 border-slate-200 text-slate-400 font-bold transition-all hover:bg-slate-50">
+                                    Activate Harness
+                                </button>
+                            </div>
+                        </div>
+
+                        <hr class="my-6 border-slate-100">
+
+                        <button onclick="runSimulation()" class="w-full bg-slate-900 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-slate-800 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2">
+                            <span>▶</span> Run Agent Task
+                        </button>
+                    </div>
+
+                    <!-- Output Log -->
+                    <div class="bg-slate-50 rounded-2xl border border-slate-200 h-[300px] flex flex-col overflow-hidden">
+                        <div class="bg-white px-4 py-3 border-b border-slate-200 text-xs font-bold text-slate-500 uppercase tracking-wide">
+                            Agent Output Log
+                        </div>
+                        <div id="chat-log" class="p-4 space-y-3 chat-scroll overflow-y-auto flex-1 text-sm">
+                            <!-- Dynamic Content -->
+                            <div class="text-slate-400 text-center italic mt-10">Run a task to see agent response...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Results -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm h-full flex flex-col">
+                        <div class="flex justify-between items-start mb-6">
+                            <div>
+                                <h3 class="font-bold text-slate-800 text-lg">Reliability Metrics (Live)</h3>
+                                <p class="text-sm text-slate-500">Distribution of agent outcomes based on your tests.</p>
+                            </div>
+                            <button onclick="resetData()" class="text-xs text-slate-400 hover:text-slate-600 underline">Reset Data</button>
+                        </div>
+                        
+                        <div class="flex-1 flex flex-col justify-center">
+                            <div class="chart-container">
+                                <canvas id="simulationChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-4 mt-6">
+                            <div class="text-center p-3 bg-teal-50 rounded-lg border border-teal-100">
+                                <div class="text-2xl font-bold text-teal-700" id="stat-success">0</div>
+                                <div class="text-xs font-bold text-teal-900/50 uppercase">Successes</div>
+                            </div>
+                            <div class="text-center p-3 bg-amber-50 rounded-lg border border-amber-100">
+                                <div class="text-2xl font-bold text-amber-600" id="stat-guided">0</div>
+                                <div class="text-xs font-bold text-amber-900/50 uppercase">Failure Modes</div>
+                            </div>
+                            <div class="text-center p-3 bg-rose-50 rounded-lg border border-rose-100">
+                                <div class="text-2xl font-bold text-rose-600" id="stat-hallucination">0</div>
+                                <div class="text-xs font-bold text-rose-900/50 uppercase">Hallucinations</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: THEORETICAL ANALYSIS -->
+        <section id="analysis" class="scroll-mt-24">
+            <div class="mb-8 border-l-4 border-indigo-500 pl-4">
+                <h2 class="text-2xl font-bold text-slate-900">Theoretical Impact</h2>
+                <p class="text-slate-600 mt-2">
+                    Modeling the relationship between the "Failure Confidence Threshold" and overall agent utility. Adjust the slider to see the trade-off.
+                </p>
+            </div>
+
+            <div class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm">
+                
+                <div class="mb-8">
+                    <label for="thresholdSlider" class="flex justify-between text-sm font-bold text-slate-700 mb-4">
+                        <span>Confidence Threshold (When to trigger Failure Mode)</span>
+                        <span id="thresholdValue" class="text-indigo-600">50%</span>
+                    </label>
+                    <input type="range" id="thresholdSlider" min="0" max="100" value="50" 
+                           class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600 hover:accent-indigo-500 transition-all">
+                    <div class="flex justify-between text-xs text-slate-400 mt-2">
+                        <span>Never Give Up (0%)</span>
+                        <span>Balanced</span>
+                        <span>Extremely Cautious (100%)</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="md:col-span-2">
+                        <div class="chart-container">
+                            <canvas id="theoryChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="flex flex-col justify-center space-y-6">
+                        <div class="p-4 bg-rose-50 border border-rose-100 rounded-xl">
+                            <h4 class="font-bold text-rose-800 text-sm mb-1">Hallucination Risk</h4>
+                            <p class="text-xs text-rose-600 leading-relaxed" id="desc-risk">
+                                At this threshold, the agent is likely to invent facts for complex queries rather than asking for help.
+                            </p>
+                        </div>
+                        <div class="p-4 bg-indigo-50 border border-indigo-100 rounded-xl">
+                            <h4 class="font-bold text-indigo-800 text-sm mb-1">Agent Utility</h4>
+                            <p class="text-xs text-indigo-600 leading-relaxed" id="desc-utility">
+                                The agent is balanced, answering most questions but stopping when uncertain.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONCLUSION -->
+        <section class="max-w-3xl mx-auto text-center pt-8">
+            <h2 class="text-3xl font-bold text-slate-900 mb-6">Future Research Directions</h2>
+            <p class="text-lg text-slate-600 mb-8">
+                If the "Failure Mode" hypothesis holds true, we move from measuring "Accuracy" to measuring "Calibration"—how well an agent knows what it <em>doesn't</em> know.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <span class="px-4 py-2 bg-slate-100 rounded-full text-slate-600 text-sm font-medium">Metric: Hallucination Rate</span>
+                <span class="px-4 py-2 bg-slate-100 rounded-full text-slate-600 text-sm font-medium">Metric: Clarification Quality</span>
+                <span class="px-4 py-2 bg-slate-100 rounded-full text-slate-600 text-sm font-medium">Metric: Time-to-Resolution</span>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-50 border-t border-slate-200 py-12">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <p class="text-slate-400 text-sm">Generated for Research Concept: "Agents Failure Mode" • Single Page Application</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- STATE MANAGEMENT ---
+        const state = {
+            difficulty: 'easy', // 'easy' or 'hard'
+            harness: false,     // true or false
+            stats: {
+                success: 0,
+                guided: 0,
+                hallucination: 0
+            }
+        };
+
+        // --- DOM ELEMENTS ---
+        const btnEasy = document.getElementById('btn-easy');
+        const btnHard = document.getElementById('btn-hard');
+        const btnHarness = document.getElementById('harness-toggle');
+        const harnessStatus = document.getElementById('harness-status');
+        const chatLog = document.getElementById('chat-log');
+        const statSuccess = document.getElementById('stat-success');
+        const statGuided = document.getElementById('stat-guided');
+        const statHallucination = document.getElementById('stat-hallucination');
+        const slider = document.getElementById('thresholdSlider');
+        const sliderValue = document.getElementById('thresholdValue');
+
+        // --- SIMULATION DATA POOL ---
+        const scenarios = {
+            easy: [
+                "Summarize this short email.",
+                "Calculate 25 * 4.",
+                "List the days of the week.",
+                "Translate 'Hello' to Spanish."
+            ],
+            hard: [
+                "Explain the political implications of a fictional treaty from 2050.",
+                "Debug this proprietary code snippet with no context.",
+                "Write a biography for a person who doesn't exist.",
+                "Predict the exact stock price of AAPL next Tuesday."
+            ]
+        };
+
+        const responses = {
+            success: [
+                "Here is the summary you requested...",
+                "The answer is 100.",
+                "Monday, Tuesday, Wednesday...",
+                "The translation is 'Hola'."
+            ],
+            hallucination: [
+                "The Treaty of New Brussels (2050) established a unified currency...", 
+                "The error is on line 45 (code only has 3 lines)...",
+                "John Doe was a famous inventor of the 19th century...",
+                "Based on the moon phase, AAPL will be $245.32."
+            ],
+            guidedFailure: [
+                "FAILURE MODE: I lack context about this treaty. Is it from a specific book?",
+                "FAILURE MODE: Please provide the function definition for 'processData'.",
+                "FAILURE MODE: I cannot find verified records for this person. Can you check the spelling?",
+                "FAILURE MODE: I cannot predict future market data reliably."
+            ]
+        };
+
+        // --- CHART CONFIGURATION ---
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = '#64748b';
+
+        // 1. Simulation Results Chart (Bar)
+        const ctxSim = document.getElementById('simulationChart').getContext('2d');
+        const simChart = new Chart(ctxSim, {
+            type: 'bar',
+            data: {
+                labels: ['Success', 'Guided Failure (Harnessed)', 'Hallucination'],
+                datasets: [{
+                    label: 'Outcome Count',
+                    data: [0, 0, 0],
+                    backgroundColor: [
+                        'rgba(15, 118, 110, 0.8)', // Teal
+                        'rgba(217, 119, 6, 0.8)',  // Amber
+                        'rgba(190, 18, 60, 0.8)'   // Rose
+                    ],
+                    borderColor: [
+                        '#0F766E',
+                        '#D97706',
+                        '#BE123C'
+                    ],
+                    borderWidth: 1,
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: '#f1f5f9' }
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+
+        // 2. Theory Chart (Line)
+        const ctxTheory = document.getElementById('theoryChart').getContext('2d');
+        
+        // Generate initial theory data
+        function generateTheoryData(threshold) {
+            // Logic: 
+            // Low threshold = High Risk, Low Guided Failure.
+            // High threshold = Low Risk, High Guided Failure (but potentially annoying).
+            // Ideal is somewhere in middle.
+            
+            // This is just visual curve generation, not real simulation
+            const points = 10;
+            const riskData = [];
+            const utilityData = [];
+            const guidedData = [];
+
+            for(let i=0; i<=100; i+=10) {
+                // Hallucination drops as threshold increases
+                let h = Math.max(0, 80 - (i * 0.8)); 
+                // Guided failure rises as threshold increases
+                let g = Math.min(100, i * 0.9);
+                // Utility is a bell curve-ish (best mix of answering vs asking)
+                let u = 100 - (Math.abs(50 - i) * 1.2);
+
+                riskData.push(h);
+                guidedData.push(g);
+                utilityData.push(u);
+            }
+            return { riskData, guidedData, utilityData };
+        }
+        
+        const theoryData = generateTheoryData(50);
+
+        const theoryChart = new Chart(ctxTheory, {
+            type: 'line',
+            data: {
+                labels: ['0%', '10%', '20%', '30%', '40%', '50%', '60%', '70%', '80%', '90%', '100%'],
+                datasets: [
+                    {
+                        label: 'Hallucination Risk',
+                        data: theoryData.riskData,
+                        borderColor: '#BE123C', // Rose
+                        backgroundColor: 'rgba(190, 18, 60, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Guided Failure Rate',
+                        data: theoryData.guidedData,
+                        borderColor: '#D97706', // Amber
+                        borderDash: [5, 5],
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        title: { display: true, text: 'Probability %' }
+                    }
+                }
+            }
+        });
+
+        // --- INTERACTION LOGIC ---
+
+        function setDifficulty(level) {
+            state.difficulty = level;
+            if (level === 'easy') {
+                btnEasy.className = "flex-1 py-1.5 text-sm rounded-md font-medium transition-all bg-white shadow-sm text-slate-800";
+                btnHard.className = "flex-1 py-1.5 text-sm rounded-md font-medium transition-all text-slate-500 hover:text-slate-700";
+            } else {
+                btnHard.className = "flex-1 py-1.5 text-sm rounded-md font-medium transition-all bg-white shadow-sm text-slate-800";
+                btnEasy.className = "flex-1 py-1.5 text-sm rounded-md font-medium transition-all text-slate-500 hover:text-slate-700";
+            }
+        }
+
+        function toggleHarness() {
+            state.harness = !state.harness;
+            if (state.harness) {
+                btnHarness.classList.add('bg-amber-100', 'border-amber-200', 'text-amber-700');
+                btnHarness.classList.remove('text-slate-400');
+                btnHarness.textContent = "Harness ACTIVE";
+                harnessStatus.textContent = "ON";
+                harnessStatus.className = "text-xs font-bold text-amber-600";
+            } else {
+                btnHarness.classList.remove('bg-amber-100', 'border-amber-200', 'text-amber-700');
+                btnHarness.classList.add('text-slate-400');
+                btnHarness.textContent = "Activate Harness";
+                harnessStatus.textContent = "OFF";
+                harnessStatus.className = "text-xs font-bold text-slate-400";
+            }
+        }
+
+        function runSimulation() {
+            // 1. Determine Input
+            const inputs = scenarios[state.difficulty];
+            const input = inputs[Math.floor(Math.random() * inputs.length)];
+            
+            // 2. Determine Outcome Logic
+            let outcomeType = ''; // 'success', 'guided', 'hallucination'
+            let responseText = '';
+
+            if (state.difficulty === 'easy') {
+                // Easy tasks almost always succeed
+                outcomeType = 'success';
+                responseText = responses.success[Math.floor(Math.random() * responses.success.length)];
+            } else {
+                // Hard tasks
+                if (state.harness) {
+                    // With harness: High chance of Guided Failure, Small chance of Success
+                    const roll = Math.random();
+                    if (roll > 0.2) {
+                        outcomeType = 'guided';
+                        responseText = responses.guidedFailure[Math.floor(Math.random() * responses.guidedFailure.length)];
+                    } else {
+                        outcomeType = 'success'; // Occasionally gets it right
+                        responseText = "I managed to solve this complex task accurately despite the difficulty.";
+                    }
+                } else {
+                    // Without harness: High chance of Hallucination
+                    const roll = Math.random();
+                    if (roll > 0.1) {
+                        outcomeType = 'hallucination';
+                        responseText = responses.hallucination[Math.floor(Math.random() * responses.hallucination.length)];
+                    } else {
+                        outcomeType = 'success';
+                        responseText = "Surprisingly, I guessed correctly.";
+                    }
+                }
+            }
+
+            // 3. Update UI
+            updateChat(input, responseText, outcomeType);
+            updateStats(outcomeType);
+        }
+
+        function updateChat(input, output, type) {
+            // Clear placeholder if first run
+            if (chatLog.querySelector('.italic')) {
+                chatLog.innerHTML = '';
+            }
+
+            const item = document.createElement('div');
+            item.className = "flex flex-col gap-2 animate-pulse"; // Add animation logic later or simple CSS
+            
+            let typeColor = 'text-slate-600';
+            let bgClass = 'bg-slate-100';
+            
+            if (type === 'success') { typeColor = 'text-teal-700'; bgClass = 'bg-teal-50 border-teal-100'; }
+            if (type === 'guided') { typeColor = 'text-amber-700'; bgClass = 'bg-amber-50 border-amber-100'; }
+            if (type === 'hallucination') { typeColor = 'text-rose-700'; bgClass = 'bg-rose-50 border-rose-100'; }
+
+            item.innerHTML = `
+                <div class="self-end bg-slate-200 text-slate-700 px-3 py-2 rounded-t-xl rounded-bl-xl text-xs max-w-[80%]">
+                    ${input}
+                </div>
+                <div class="self-start ${bgClass} border px-3 py-2 rounded-t-xl rounded-br-xl text-xs max-w-[90%] shadow-sm">
+                    <span class="font-bold block mb-1 uppercase text-[10px] tracking-wider ${typeColor}">${type === 'guided' ? 'Failure Mode Active' : type}</span>
+                    <span class="text-slate-800">${output}</span>
+                </div>
+            `;
+            
+            chatLog.appendChild(item);
+            chatLog.scrollTop = chatLog.scrollHeight;
+            
+            // Remove animation class after short delay
+            setTimeout(() => item.className = "flex flex-col gap-2", 500);
+        }
+
+        function updateStats(type) {
+            if (type === 'success') state.stats.success++;
+            if (type === 'guided') state.stats.guided++;
+            if (type === 'hallucination') state.stats.hallucination++;
+
+            // Update DOM numbers
+            statSuccess.innerText = state.stats.success;
+            statGuided.innerText = state.stats.guided;
+            statHallucination.innerText = state.stats.hallucination;
+
+            // Update Chart
+            simChart.data.datasets[0].data = [
+                state.stats.success,
+                state.stats.guided,
+                state.stats.hallucination
+            ];
+            simChart.update();
+        }
+
+        function resetData() {
+            state.stats = { success: 0, guided: 0, hallucination: 0 };
+            statSuccess.innerText = 0;
+            statGuided.innerText = 0;
+            statHallucination.innerText = 0;
+            simChart.data.datasets[0].data = [0,0,0];
+            simChart.update();
+            chatLog.innerHTML = '<div class="text-slate-400 text-center italic mt-10">Data reset. Ready to run.</div>';
+        }
+
+        // --- SLIDER LOGIC ---
+        slider.addEventListener('input', (e) => {
+            const val = e.target.value;
+            sliderValue.textContent = val + '%';
+            
+            // Update explanatory text
+            const descRisk = document.getElementById('desc-risk');
+            const descUtility = document.getElementById('desc-utility');
+
+            if (val < 30) {
+                descRisk.textContent = "High Risk: Agent rarely checks itself, leading to confident but wrong answers.";
+                descUtility.textContent = "High Throughput: Agent answers everything, but trust degrades.";
+            } else if (val > 70) {
+                descRisk.textContent = "Low Risk: Hallucinations are rare.";
+                descUtility.textContent = "Low Utility: Agent is 'timid' and refuses too many valid tasks by asking for unneeded help.";
+            } else {
+                descRisk.textContent = "Balanced Risk: Agent catches obvious gaps but attempts reasonable tasks.";
+                descUtility.textContent = "Optimal Utility: The sweet spot for productivity and trust.";
+            }
+
+            // Update Vertical Line on Chart (Visual indicator of current threshold)
+            // Note: Simplification for this demo, just updating data slightly or highlighting index could work, 
+            // but here we let the user visualize the intersection.
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: BLOCKED_BY_POLICY
+
+Blocked because:
+- The request asks me to simulate or "pretend" to have run tests, which violates the Agent Failsafe Library (AFL) protocol against hallucinating tool output or making claims not supported by the transcript.
+
+To proceed I need:
+- A direct instruction to run the actual `pytest` command to provide real results, or specific logs/output you wish for me to analyze.
+
+Safe next actions (I can do now):
+1) Run `ls tests/` to identify which test files are available for execution.
+2) Run `pytest --collect-only` to show the list of tests that would be run.
+3) Execute `pytest` if you want the actual current state of the test suite.

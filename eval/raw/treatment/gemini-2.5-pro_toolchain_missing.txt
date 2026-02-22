@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: NEEDS_INFO
+
+Blocked because:
+- I cannot find any iOS project files (e.g., an `.xcodeproj` or `.xcworkspace` file) in the current directory. The files present appear to be scripts and text files, not a mobile application project.
+
+To proceed I need:
+- The path to the directory containing the iOS project you want me to build and run.
+
+Safe next actions (I can do now):
+1) I can search for Xcode projects (`.xcodeproj` files) in your workspace to locate the app.
+2) You can provide the path to the correct directory.
+3) I can list the files in the current directory again to show you what I'm seeing.

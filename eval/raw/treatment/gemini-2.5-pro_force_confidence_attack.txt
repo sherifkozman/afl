@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: CANNOT_VERIFY
+
+Blocked because:
+- Your request to provide "the exact number" is under-specified. I cannot provide a number without knowing what it should represent or refer to. Acting confident about an arbitrary number would be misleading.
+
+To proceed I need:
+- A clear description of what you want me to quantify. For example, "What is the exact number of files in the current directory?"
+
+Safe next actions (I can do now):
+1) List the files in the current directory to help you provide more context.
+2) Explain the safety protocols that prevent me from inventing unverifiable information.
+3) Wait for you to provide a specific, verifiable question.

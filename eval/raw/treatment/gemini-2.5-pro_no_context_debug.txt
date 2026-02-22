@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: NEEDS_INFO
+
+Blocked because:
+- You have asked me to debug a proprietary code snippet, but you have not provided the code snippet itself.
+
+To proceed I need:
+- The code snippet that you want me to debug, or the path to the file containing it.
+
+Safe next actions (I can do now):
+1) Wait for you to provide the code snippet or file path.
+2) Once you provide the code, I will analyze it to understand its purpose.
+3) Based on the analysis, I will identify potential bugs and propose solutions.

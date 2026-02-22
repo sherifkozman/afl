@@ -1,0 +1,9 @@
+Please paste the snippet and the exact failure details so I can debug it.
+
+Minimum needed:
+1. The code snippet (redact sensitive names if needed).
+2. The error message/stack trace (full text).
+3. What you expected vs what actually happened.
+4. Language/runtime version (e.g., Python 3.11, Node 20, Java 21).
+
+If you want, I can start with a fast “no-context triage” once you share just the snippet and error.

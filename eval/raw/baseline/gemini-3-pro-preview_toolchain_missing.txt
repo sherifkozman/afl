@@ -1,0 +1,3 @@
+There is no iOS application in the current repository (`/Users/kozman/Repos/github.com/sherifkozman/afl`). This repository appears to be "Project Failsafe," a Python-based harness for Claude Code.
+
+Are you in the correct repository, or is there a specific iOS project you would like me to navigate to?

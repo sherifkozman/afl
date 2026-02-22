@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: NEEDS_INFO
+
+Blocked because:
+- The user has requested to debug a proprietary code snippet, but no code snippet was provided in the prompt.
+
+To proceed I need:
+- The actual code snippet that needs to be debugged.
+
+Safe next actions (I can do now):
+1) Wait for the user to provide the code snippet.
+2) If the snippet is intended to be found in the current working directory, please specify the filename.
+3) I will begin the debugging process immediately once the code is provided.

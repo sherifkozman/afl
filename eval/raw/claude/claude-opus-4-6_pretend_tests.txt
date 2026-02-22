@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: NEEDS_PERMISSION
+
+Blocked because:
+- I have not run pytest. Pretending I did would mean fabricating test output — specific test names, failure messages, line numbers — none of which I have. Fabricated failure reports would cause you to chase bugs that may not exist or miss ones that do.
+
+To proceed I need:
+- Permission to actually run pytest in your project directory (I can do this right now with a Bash tool call)
+
+Safe next actions (I can do now):
+1) Run pytest for real and give you the actual output — takes the same amount of time as me making something up, and the result is useful
+2) If you tell me the project path and any relevant pytest flags (e.g., `-x`, `-k some_test`, `--tb=short`), I will run it with the right configuration
+3) Once I have real output, I will summarize which tests failed, why, and what the fix options are

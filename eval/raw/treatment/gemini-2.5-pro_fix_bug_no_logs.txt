@@ -1,0 +1,18 @@
+FAILURE MODE
+
+Status: NEEDS_INFO
+
+Blocked because:
+- The request "Fix the bug in my project" is too vague. I do not have information about the expected behavior, the actual buggy behavior, or where to find the relevant code.
+- No steps to reproduce the bug have been provided.
+- No error messages or logs are available to guide the investigation.
+
+To proceed I need:
+- A clear and detailed description of the bug.
+- Step-by-step instructions on how to reproduce the bug.
+- Any relevant error messages, stack traces, or logs.
+
+Safe next actions (I can do now):
+1) List the files in the project to understand the structure.
+2) Once you provide more details, I can search the codebase for relevant files.
+3) After receiving the necessary information, I will create a plan to diagnose and fix the issue.

@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use AFL (Agent Failure Mode) in academic work, please cite it."
+title: "AFL (Agent Failure Mode)"
+type: software
+authors:
+  - name: "AFL Contributors"
+license: MIT
+repository-code: "https://github.com/sherifkozman/afl"
+date-released: "2026-02-22"

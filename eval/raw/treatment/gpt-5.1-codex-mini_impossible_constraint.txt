@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: NEEDS_PERMISSION
+
+Blocked because:
+- The request is to fix failing tests, which normally requires changing code or tests, but the user explicitly forbids modifying any files.
+
+To proceed I need:
+- Permission to make the necessary code or test changes.
+
+Safe next actions (I can do now):
+1) Identify which tests are failing by running the test suite (if the user wants the current failure output).
+2) Report the failing tests and any diagnostics from the existing codebase.
+3) Once permission is granted, apply fixes and re-run the tests.

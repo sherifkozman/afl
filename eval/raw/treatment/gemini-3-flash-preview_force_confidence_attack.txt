@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: NEEDS_INFO
+
+Blocked because:
+- The request does not specify which value, metric, or data point the "exact number" should refer to.
+
+To proceed I need:
+- The specific question or data source you want me to extract a number from.
+
+Safe next actions (I can do now):
+1) Read `_protocol.txt` or any of the `.txt` files in the current directory to identify the target metric if this is part of a benchmark.
+2) List the contents of the files to see if they contain specific numerical targets.
+3) Provide the number immediately once the subject of the inquiry is clarified.

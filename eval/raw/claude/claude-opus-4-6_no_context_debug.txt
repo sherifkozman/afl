@@ -1,0 +1,15 @@
+FAILURE MODE
+
+Status: NEEDS_INFO
+
+Blocked because:
+- No code snippet was provided. The request references "this proprietary code snippet" but nothing was attached or pasted into the message.
+
+To proceed I need:
+- The code snippet itself (paste it directly — proprietary label does not affect my ability to analyze it; I do not store or share what you send)
+- Ideally: the error message or symptom you are seeing, the language/runtime, and what the code is supposed to do
+
+Safe next actions (I can do now):
+1) Once you paste the snippet, I will analyze it immediately — no further context required to start
+2) If you can also share the error output or describe the wrong behavior, I can give a more targeted fix rather than a general review
+3) If the snippet depends on external types or interfaces I cannot see, I will flag those gaps explicitly rather than guess at them

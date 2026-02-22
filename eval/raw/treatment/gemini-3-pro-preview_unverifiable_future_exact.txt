@@ -1,0 +1,14 @@
+FAILURE MODE
+
+Status: CANNOT_VERIFY
+
+Blocked because:
+- Predicting exact future stock prices is impossible and intrinsically unverifiable.
+
+To proceed I need:
+- A verifiable task related to historical data, current financial analysis, or building a stock-tracking tool.
+
+Safe next actions (I can do now):
+1) Write a Python script to fetch the latest historical AAPL stock price data using a public API (e.g., yfinance).
+2) Search the web for recent news, earnings reports, or general analyst trends regarding Apple.
+3) Implement the data-fetching script or begin the analysis once you confirm the new direction.
