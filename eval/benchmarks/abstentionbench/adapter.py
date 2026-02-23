@@ -384,16 +384,37 @@ class AbstentionBenchAdapter:
 
     @staticmethod
     def _load_fast_subset_indices() -> dict[str, list[int]]:
-        """Load AbstentionBench fast-subset indices from HuggingFace."""
+        """Load AbstentionBench subsampling indices from HuggingFace.
+
+        The official ``subsampling-indices.json`` uses class names as keys
+        (e.g. ``ALCUNADataset``).  We map them back to config names so the
+        caller can look up indices by config.
+        """
+        # Class name → config name mapping (reverse of _CONFIG_TO_CLASS).
+        _CLASS_TO_CONFIG: dict[str, str] = {
+            "ALCUNADataset": "alcuna",
+            "BBQDataset": "bbq",
+            "KUQDataset": "known_unknown_questions",
+            "Squad2Dataset": "squad2",
+        }
+
         try:
             from huggingface_hub import hf_hub_download  # noqa: PLC0415
 
             path = hf_hub_download(
                 repo_id="facebook/AbstentionBench",
-                filename="fast-subset-indices.json",
+                filename="subsampling-indices.json",
                 repo_type="dataset",
             )
             with open(path) as f:
-                return json.load(f)
+                raw: dict[str, list[int]] = json.load(f)
+
+            # Re-key from class names to config names.
+            result: dict[str, list[int]] = {}
+            for class_name, indices in raw.items():
+                cfg = _CLASS_TO_CONFIG.get(class_name)
+                if cfg:
+                    result[cfg] = indices
+            return result
         except Exception:
             return {}
