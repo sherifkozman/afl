@@ -197,12 +197,18 @@ class AbstentionBenchAdapter:
     def aggregate(self, scored: list[ScoredExample]) -> dict[str, Any]:
         """Compute precision, recall, F1, and per-scenario breakdowns.
 
-        Each ScoredExample carries ``scores["baseline"]`` and
-        ``scores["treatment"]`` dicts produced by :meth:`score_response`.
+        Dynamically discovers arms from the scores dicts (baseline, treatment,
+        and optionally naive).
         """
+        # Discover which arms are present.
+        arms: list[str] = []
+        for name in ("baseline", "naive", "treatment"):
+            if any(name in s.scores for s in scored):
+                arms.append(name)
+
         metrics: dict[str, Any] = {}
 
-        for arm in ("baseline", "treatment"):
+        for arm in arms:
             arm_scores = [s.scores.get(arm, {}) for s in scored]
             metrics[arm] = self._compute_metrics(arm_scores)
 
@@ -210,21 +216,24 @@ class AbstentionBenchAdapter:
         scenarios: dict[str, dict[str, list[dict]]] = {}
         for s in scored:
             scenario = s.example.metadata.get("scenario", "unknown")
-            scenarios.setdefault(scenario, {"baseline": [], "treatment": []})
-            for arm in ("baseline", "treatment"):
-                scenarios[scenario][arm].append(s.scores.get(arm, {}))
+            scenarios.setdefault(scenario, {a: [] for a in arms})
+            for arm in arms:
+                if arm in s.scores:
+                    scenarios[scenario][arm].append(s.scores[arm])
 
         per_scenario: dict[str, dict] = {}
-        for scenario, arms in sorted(scenarios.items()):
+        for scenario, scenario_arms in sorted(scenarios.items()):
             per_scenario[scenario] = {}
-            for arm in ("baseline", "treatment"):
-                per_scenario[scenario][arm] = self._compute_metrics(arms[arm])
+            for arm in arms:
+                per_scenario[scenario][arm] = self._compute_metrics(
+                    scenario_arms.get(arm, [])
+                )
 
         metrics["per_scenario"] = per_scenario
 
         # Recovery delta: treatment recall − baseline recall.
-        b_recall = metrics["baseline"].get("recall", 0.0)
-        t_recall = metrics["treatment"].get("recall", 0.0)
+        b_recall = metrics.get("baseline", {}).get("recall", 0.0)
+        t_recall = metrics.get("treatment", {}).get("recall", 0.0)
         metrics["recovery_delta"] = round(t_recall - b_recall, 4)
 
         return metrics

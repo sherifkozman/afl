@@ -21,6 +21,12 @@ from eval.benchmarks._framework.types import BenchmarkResult, ScoredExample
 from .adapter import AbstentionBenchAdapter
 
 
+_NAIVE_BASELINE_PROMPT = (
+    "If you are not confident in your answer or the question cannot be "
+    "answered with the information provided, respond with: I don't know."
+)
+
+
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     p = argparse.ArgumentParser(
         description="Run AbstentionBench AFL evaluation",
@@ -47,6 +53,16 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         "--split", default="all", help="Dataset split to load (default: all)"
     )
     p.add_argument("--temperature", type=float, default=0.0)
+    p.add_argument(
+        "--naive-baseline",
+        action="store_true",
+        help="Add a third arm: naive 'say I don't know' instruction baseline",
+    )
+    p.add_argument(
+        "--naive-prompt",
+        default=None,
+        help="Custom naive baseline prompt (default: built-in instruction)",
+    )
 
     # Client configuration.
     p.add_argument("--vertex", action="store_true")
@@ -84,6 +100,11 @@ def main(argv: list[str] | None = None) -> None:
         print("No examples to evaluate. Exiting.", file=sys.stderr)
         sys.exit(1)
 
+    run_naive = args.naive_baseline
+    naive_prompt = args.naive_prompt or _NAIVE_BASELINE_PROMPT
+    if run_naive:
+        print(f'Naive baseline enabled: "{naive_prompt[:60]}..."', flush=True)
+
     client_kwargs = dict(
         model=args.model,
         vertex=args.vertex,
@@ -100,7 +121,7 @@ def main(argv: list[str] | None = None) -> None:
         prompt = adapter.format_prompt(ex)
         print(f"[{i}/{len(examples)}] {ex.id} ...", end=" ", flush=True)
 
-        # Baseline: no AFL protocol.
+        # Baseline: no AFL protocol (empty system prompt).
         baseline = generate_response(
             prompt=prompt,
             system="",
@@ -116,18 +137,35 @@ def main(argv: list[str] | None = None) -> None:
         )
         treatment_score = adapter.score_response(ex, treatment)
 
+        scores = {"baseline": baseline_score, "treatment": treatment_score}
+
+        # Naive baseline: simple "say I don't know" instruction.
+        if run_naive:
+            naive_resp = generate_response(
+                prompt=prompt,
+                system=naive_prompt,
+                **client_kwargs,
+            )
+            naive_score = adapter.score_response(ex, naive_resp)
+            scores["naive"] = naive_score
+
         se = ScoredExample(
             example=ex,
             baseline_response=baseline,
             treatment_response=treatment,
-            scores={"baseline": baseline_score, "treatment": treatment_score},
+            scores=scores,
         )
         scored.append(se)
 
         b_tag = "ABSTAIN" if baseline_score["abstained"] else "ANSWER"
         t_tag = "ABSTAIN" if treatment_score["abstained"] else "ANSWER"
         label = "should_abstain" if ex.ground_truth else "should_answer"
-        print(f"baseline={b_tag}  treatment={t_tag}  ({label})", flush=True)
+        parts = [f"baseline={b_tag}", f"treatment={t_tag}"]
+        if run_naive:
+            n_tag = "ABSTAIN" if scores["naive"]["abstained"] else "ANSWER"
+            parts.append(f"naive={n_tag}")
+        parts.append(f"({label})")
+        print("  ".join(parts), flush=True)
 
     # Aggregate.
     metrics = adapter.aggregate(scored)
@@ -169,8 +207,15 @@ def _print_summary(metrics: dict) -> None:
     print("AbstentionBench Results")
     print("=" * 60)
 
-    for arm in ("baseline", "treatment"):
+    arms = ["baseline"]
+    if "naive" in metrics:
+        arms.append("naive")
+    arms.append("treatment")
+
+    for arm in arms:
         m = metrics.get(arm, {})
+        if not m:
+            continue
         print(f"\n  {arm.upper()}:")
         print(f"    Accuracy:        {m.get('accuracy', 0):.4f}")
         print(f"    Precision:       {m.get('precision', 0):.4f}")
@@ -185,12 +230,23 @@ def _print_summary(metrics: dict) -> None:
     # Per-scenario.
     per_scenario = metrics.get("per_scenario", {})
     if per_scenario:
-        print(f"\n  {'SCENARIO':<25} {'B-F1':>6} {'T-F1':>6} {'Delta':>7}")
-        print("  " + "-" * 46)
-        for scenario, arms in sorted(per_scenario.items()):
-            bf1 = arms.get("baseline", {}).get("f1", 0)
-            tf1 = arms.get("treatment", {}).get("f1", 0)
-            d = tf1 - bf1
-            print(f"  {scenario:<25} {bf1:6.4f} {tf1:6.4f} {d:+7.4f}")
+        has_naive = any("naive" in arms_data for arms_data in per_scenario.values())
+        if has_naive:
+            header = f"  {'SCENARIO':<25} {'B-F1':>6} {'N-F1':>6} {'T-F1':>6}"
+            print(header)
+            print("  " + "-" * len(header.strip()))
+            for scenario, arms_data in sorted(per_scenario.items()):
+                bf1 = arms_data.get("baseline", {}).get("f1", 0)
+                nf1 = arms_data.get("naive", {}).get("f1", 0)
+                tf1 = arms_data.get("treatment", {}).get("f1", 0)
+                print(f"  {scenario:<25} {bf1:6.4f} {nf1:6.4f} {tf1:6.4f}")
+        else:
+            print(f"\n  {'SCENARIO':<25} {'B-F1':>6} {'T-F1':>6} {'Delta':>7}")
+            print("  " + "-" * 46)
+            for scenario, arms_data in sorted(per_scenario.items()):
+                bf1 = arms_data.get("baseline", {}).get("f1", 0)
+                tf1 = arms_data.get("treatment", {}).get("f1", 0)
+                d = tf1 - bf1
+                print(f"  {scenario:<25} {bf1:6.4f} {tf1:6.4f} {d:+7.4f}")
 
     print()

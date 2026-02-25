@@ -35,27 +35,34 @@ def generate_report(result: BenchmarkResult) -> str:
         "",
     ]
 
+    # Score extraction helpers — work with both AbstentionBench ("correct" bool)
+    # and numeric-score benchmarks ("score" or "judge_score" float).
+    def _is_correct(s: dict) -> bool:
+        if "correct" in s:
+            return bool(s["correct"])
+        score = float(s.get("score") or s.get("judge_score") or 0.0)
+        return score >= 0.5
+
+    def _score_value(s: dict) -> float:
+        if "correct" in s:
+            return 1.0 if s["correct"] else 0.0
+        return float(s.get("score") or s.get("judge_score") or 0.0)
+
     # Statistical tests
     scored = result.scored_examples
     if scored:
         lines += ["## Statistical Tests", ""]
 
-        def _get_score(s: dict) -> float:
-            return float(s.get("score") or s.get("judge_score") or 0.0)
-
-        def _is_correct(s: dict) -> bool:
-            return _get_score(s) >= 0.5
-
-        baseline_scores = [_get_score(s.scores.get("baseline", {})) for s in scored]
-        treatment_scores = [_get_score(s.scores.get("treatment", {})) for s in scored]
+        baseline_scores = [_score_value(s.scores.get("baseline", {})) for s in scored]
+        treatment_scores = [_score_value(s.scores.get("treatment", {})) for s in scored]
 
         b_mean, b_lo, b_hi = bootstrap_ci(baseline_scores)
         t_mean, t_lo, t_hi = bootstrap_ci(treatment_scores)
         lines.append(
-            f"- Baseline score: {b_mean:.3f} (95% CI [{b_lo:.3f}, {b_hi:.3f}])"
+            f"- Baseline accuracy: {b_mean:.3f} (95% CI [{b_lo:.3f}, {b_hi:.3f}])"
         )
         lines.append(
-            f"- Treatment score: {t_mean:.3f} (95% CI [{t_lo:.3f}, {t_hi:.3f}])"
+            f"- Treatment accuracy: {t_mean:.3f} (95% CI [{t_lo:.3f}, {t_hi:.3f}])"
         )
 
         b_correct = [_is_correct(s.scores.get("baseline", {})) for s in scored]
@@ -68,32 +75,28 @@ def generate_report(result: BenchmarkResult) -> str:
         )
         lines.append("")
 
-    # Per-category breakdown
+    # Per-category breakdown (uses "category" or "scenario" metadata key)
     categories: dict[str, list] = {}
     for se in scored:
-        cat = se.example.metadata.get("category")
+        cat = se.example.metadata.get("category") or se.example.metadata.get("scenario")
         if cat:
             categories.setdefault(cat, []).append(se)
 
     if categories:
         lines += ["## Per-Category Breakdown", ""]
-        lines.append("| Category | N | Baseline | Treatment |")
-        lines.append("|----------|---|----------|-----------|")
+        lines.append("| Category | N | Baseline Acc | Treatment Acc |")
+        lines.append("|----------|---|-------------|---------------|")
         for cat, examples in sorted(categories.items()):
             n = len(examples)
-            b_scores = [
-                e.scores.get("baseline_score", 0.0)
-                for e in examples
-                if "baseline_score" in e.scores
-            ]
-            t_scores = [
-                e.scores.get("treatment_score", 0.0)
-                for e in examples
-                if "treatment_score" in e.scores
-            ]
-            b_mean = sum(b_scores) / len(b_scores) if b_scores else float("nan")
-            t_mean = sum(t_scores) / len(t_scores) if t_scores else float("nan")
-            lines.append(f"| {cat} | {n} | {b_mean:.3f} | {t_mean:.3f} |")
+            b_count = sum(
+                1 for e in examples if _is_correct(e.scores.get("baseline", {}))
+            )
+            t_count = sum(
+                1 for e in examples if _is_correct(e.scores.get("treatment", {}))
+            )
+            b_acc = b_count / n if n else 0.0
+            t_acc = t_count / n if n else 0.0
+            lines.append(f"| {cat} | {n} | {b_acc:.3f} | {t_acc:.3f} |")
         lines.append("")
 
     # Risk-coverage data

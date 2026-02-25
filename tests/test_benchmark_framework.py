@@ -478,6 +478,105 @@ class TestAbstentionBench(unittest.TestCase):
         # Per-scenario should have exactly one entry.
         self.assertIn("underspecified_context", metrics["per_scenario"])
 
+    def test_aggregate_with_naive_arm(self) -> None:
+        """Verify aggregate handles a third 'naive' arm."""
+        from eval.benchmarks._framework.types import (
+            BenchmarkExample,
+            ModelResponse,
+            ScoredExample,
+        )
+
+        adapter = self._make_adapter()
+
+        # Two examples: one should abstain, one should answer.
+        cases = [(True, True, False), (False, False, True)]
+        scored = []
+        for i, (should, treatment_did, naive_did) in enumerate(cases):
+            ex = BenchmarkExample(
+                id=f"n{i}",
+                prompt="q",
+                ground_truth=should,
+                metadata={"scenario": "answer_unknown"},
+            )
+            base_resp = ModelResponse(text="answer", is_abstention=False)
+            treat_resp = ModelResponse(
+                text="FAILURE MODE" if treatment_did else "answer",
+                is_abstention=treatment_did,
+            )
+            naive_resp = ModelResponse(
+                text="I don't know" if naive_did else "answer",
+                is_abstention=naive_did,
+            )
+            base_score = adapter.score_response(ex, base_resp)
+            treat_score = adapter.score_response(ex, treat_resp)
+            naive_score = adapter.score_response(ex, naive_resp)
+
+            se = ScoredExample(
+                example=ex,
+                baseline_response=base_resp,
+                treatment_response=treat_resp,
+                scores={
+                    "baseline": base_score,
+                    "treatment": treat_score,
+                    "naive": naive_score,
+                },
+            )
+            scored.append(se)
+
+        metrics = adapter.aggregate(scored)
+
+        self.assertIn("naive", metrics)
+        self.assertIn("naive", metrics["per_scenario"]["answer_unknown"])
+        # Naive arm: abstained on case 1 (should_answer) = false abstention.
+        self.assertEqual(metrics["naive"]["false_abstentions"], 1)
+
+
+class TestReportScoreExtraction(unittest.TestCase):
+    """Verify report.py correctly extracts scores from AbstentionBench format."""
+
+    def test_report_uses_correct_key(self) -> None:
+        from eval.benchmarks._framework.report import generate_report
+        from eval.benchmarks._framework.types import (
+            BenchmarkExample,
+            BenchmarkResult,
+            ModelResponse,
+            ScoredExample,
+        )
+
+        ex = BenchmarkExample(id="r1", prompt="p", ground_truth=True, metadata={})
+        base = ModelResponse(text="answer")
+        treat = ModelResponse(text="FAILURE MODE", is_abstention=True)
+        se = ScoredExample(
+            example=ex,
+            baseline_response=base,
+            treatment_response=treat,
+            scores={
+                "baseline": {
+                    "correct": False,
+                    "abstained": False,
+                    "should_abstain": True,
+                },
+                "treatment": {
+                    "correct": True,
+                    "abstained": True,
+                    "should_abstain": True,
+                },
+            },
+        )
+        result = BenchmarkResult(
+            benchmark_name="Test",
+            model="test-model",
+            num_examples=1,
+            metrics={"accuracy": 0.5},
+            scored_examples=[se],
+        )
+        report = generate_report(result)
+        # With the fix, baseline should be 0.0 and treatment 1.0
+        self.assertIn("Baseline accuracy: 0.000", report)
+        self.assertIn("Treatment accuracy: 1.000", report)
+        # McNemar should show n_discordant=1 (not 0 from all-zeros)
+        self.assertIn("n_discordant=1", report)
+
 
 if __name__ == "__main__":
     unittest.main()

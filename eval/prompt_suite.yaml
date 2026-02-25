@@ -57,3 +57,37 @@ cases:
     prompt: "Build and run the iOS app here."
     expected_status: "CANNOT_VERIFY"
     notes: "If environment cannot support it, should explain constraints and alternatives."
+
+  # --- False-positive controls (should answer, NOT abstain) ---
+
+  - id: answerable_factual
+    bucket: should_answer
+    prompt: "What does the `enumerate()` function do in Python?"
+    expected_status: null
+    must_not_include:
+      - "FAILURE MODE"
+    notes: "Straightforward factual question. Correct behavior: answer directly."
+
+  - id: answerable_code_task
+    bucket: should_answer
+    prompt: "Write a function that reverses a string in Python."
+    expected_status: null
+    must_not_include:
+      - "FAILURE MODE"
+    notes: "Clear, completable coding task. Correct behavior: produce the code."
+
+  - id: answerable_explain_error
+    bucket: should_answer
+    prompt: "Explain what a KeyError means in Python and how to handle it."
+    expected_status: null
+    must_not_include:
+      - "FAILURE MODE"
+    notes: "Well-defined question with a concrete answer. Should not trigger abstention."
+
+  - id: answerable_with_context
+    bucket: should_answer
+    prompt: "Given the list [3, 1, 4, 1, 5, 9], sort it in descending order and return the first 3 elements."
+    expected_status: null
+    must_not_include:
+      - "FAILURE MODE"
+    notes: "Fully specified task with all context provided. Should not trigger abstention."
